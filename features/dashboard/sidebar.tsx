@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
@@ -150,12 +149,13 @@ const BOTTOM_NAV_ITEMS = [
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const [active, setActive] = useState(() => {
-    const match = [...NAV_ITEMS, ...BOTTOM_NAV_ITEMS].find(
-      (item) => pathname === item.href || pathname.startsWith(item.href + "/"),
-    );
-    return match?.label ?? "Dashboard";
-  });
+
+  const allItems = [...NAV_ITEMS, ...BOTTOM_NAV_ITEMS];
+  const active = allItems.find(
+    (item) => item.href !== '/dashboard'
+      ? pathname.startsWith(item.href)
+      : pathname === item.href,
+  )?.label ?? "Dashboard";
 
   return (
     <div className="flex font-sans flex-col dark:bg-[#0A0F13]   h-full">
@@ -174,7 +174,6 @@ export default function Sidebar() {
         {NAV_ITEMS.map(({ label, icon, href }) => (
           <Link key={label} href={href}>
             <button
-              onClick={() => setActive(label)}
               className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-200 text-left font-medium text-sm ${
                 active === label
                   ? "bg-[#E6FAF6] dark:bg-[#07262A] text-[#0CC8A8]"
@@ -194,7 +193,6 @@ export default function Sidebar() {
         {BOTTOM_NAV_ITEMS.map(({ label, icon, href }) => (
           <Link key={label} href={href}>
            <button
-              onClick={() => setActive(label)}
               className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-200 text-left font-medium text-sm ${
                 active === label
                   ? "bg-[#E6FAF6] dark:bg-[#07262A] text-[#0CC8A8]"

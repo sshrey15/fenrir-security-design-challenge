@@ -1,14 +1,16 @@
 'use client'
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import {usePathname} from "next/navigation";
+import {usePathname, useSearchParams} from "next/navigation";
 import { MdOutlineWbSunny } from "react-icons/md";
 import { FaRegMoon } from "react-icons/fa";
+import { SCAN_DATA } from "../../config/home-dashboard-data";
 
 
 export default function DashboardNavbar() {
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [mounted, setMounted] = useState(false);
   const [isScanning, setIsScanning] = useState(true);
 
@@ -27,6 +29,15 @@ export default function DashboardNavbar() {
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
   };
+
+  const getScanDetail = () => {
+    const scanId = searchParams.get('scanId');
+    if (!scanId) return null;
+    const row = SCAN_DATA.find((s) => s.id === scanId);
+    return row ?? null;
+  };
+
+  const scanDetail = getScanDetail();
 
   function toggleTheme() {
     setTheme(theme === "dark" ? "light" : "dark");
@@ -49,9 +60,19 @@ export default function DashboardNavbar() {
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-400">
           <path d="M9 6l6 6-6 6" />
         </svg>
-        <span className="text-[#0CC8A8] font-medium">
-          {getBreadcrumb()}
-        </span>
+        {scanDetail ? (
+          <>
+            <span className="text-gray-400 font-medium">{getBreadcrumb()}</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-400">
+              <path d="M9 6l6 6-6 6" />
+            </svg>
+            <span className="text-[#0CC8A8] font-medium">{scanDetail.type}</span>
+          </>
+        ) : (
+          <span className="text-[#0CC8A8] font-medium">
+            {getBreadcrumb()}
+          </span>
+        )}
       </div>
 
 

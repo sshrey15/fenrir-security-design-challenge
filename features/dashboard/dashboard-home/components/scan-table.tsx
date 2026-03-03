@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import type { ScanRow } from '../../../../types/types'
 import type { ColumnKey } from './search-filter-bar'
 import StatusBadge from './status-bar'
@@ -25,6 +26,7 @@ const COLUMN_HEADERS: Record<ColumnKey, string> = {
 
 export default function ScanTable({ data, pageSize = 15, totalScans, visibleColumns }: ScanTableProps) {
   const [currentPage, setCurrentPage] = useState(1)
+  const router = useRouter()
 
   const totalPages = Math.ceil(data.length / pageSize)
   const startIndex = (currentPage - 1) * pageSize
@@ -85,10 +87,11 @@ export default function ScanTable({ data, pageSize = 15, totalScans, visibleColu
           </tr>
         </thead>
         <tbody>
-          {paginatedData.map((row, i) => (
+          {paginatedData.map((row) => (
             <tr
-              key={startIndex + i}
-              className="hover:bg-gray-50/50 dark:hover:bg-white/5 transition"
+              key={row.id}
+              onClick={() => router.push(`/dashboard/scans?scanId=${row.id}`)}
+              className="hover:bg-gray-50/50 dark:hover:bg-white/5 transition cursor-pointer"
             >
               {isVisible('name') && (
                 <td className="px-6 py-4 text-sm dark:text-white font-medium text-gray-900">
