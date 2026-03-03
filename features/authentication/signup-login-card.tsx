@@ -2,12 +2,86 @@
 
 import { useState } from "react"
 import Image from "next/image"
-import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 export function SignupLoginCard() {
+  const router = useRouter()
   const [showPassword, setShowPassword] = useState(false)
   const [agreed, setAgreed] = useState(false)
   const [isLogin, setIsLogin] = useState(false)
+
+  // Form fields
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+
+    if (isLogin) {
+ 
+      const stored = localStorage.getItem("aps_users")
+      const users: { email: string; password: string; firstName: string; lastName: string }[] = stored ? JSON.parse(stored) : []
+
+
+      const matchedUser = users.find((u) => u.email === email && u.password === password)
+      const isDefaultAdmin = email === "admin" && password === "admin"
+
+      if (matchedUser || isDefaultAdmin) {
+        localStorage.setItem("aps_logged_in", "true")
+        toast.success(`Welcome back${matchedUser ? `, ${matchedUser.firstName}` : ""}! `, {
+          description: "Redirecting to dashboard...",
+        })
+        setTimeout(() => router.push("/dashboard"), 600)
+      } else {
+        toast.error("Invalid credentials", {
+          description: "Please check your email and password and try again.",
+        })
+      }
+    } else {
+   
+      if (!firstName.trim() || !lastName.trim()) {
+        toast.error("Please fill in your name")
+        return
+      }
+      if (!email.trim() || !password.trim()) {
+        toast.error("Please fill in email and password")
+        return
+      }
+      if (password.length < 8) {
+        toast.error("Password must be at least 8 characters")
+        return
+      }
+      if (!agreed) {
+        toast.error("Please agree to Terms & Conditions")
+        return
+      }
+
+   
+      const stored = localStorage.getItem("aps_users")
+      const users: { email: string; password: string; firstName: string; lastName: string }[] = stored ? JSON.parse(stored) : []
+
+      if (users.find((u) => u.email === email)) {
+        toast.error("Account already exists", {
+          description: "Please log in instead.",
+        })
+        return
+      }
+
+      users.push({ email, password, firstName, lastName })
+      localStorage.setItem("aps_users", JSON.stringify(users))
+
+      toast.success("Account created successfully! ", {
+        description: "Please log in with your credentials.",
+      })
+
+      
+      setPassword("")
+      setIsLogin(true)
+    }
+  }
 
   return (
     <div className="w-full font-sans max-w-md rounded-3xl bg-white shadow-2xl px-8 py-10">
@@ -33,7 +107,7 @@ export function SignupLoginCard() {
         </p>
       </div>
 
-      <form className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
 
    
         {!isLogin && (
@@ -41,12 +115,16 @@ export function SignupLoginCard() {
             <input
               type="text"
               placeholder="First name*"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
               required
               className="h-12 w-full rounded-lg border border-gray-300 bg-transparent px-4 text-sm text-gray-900 placeholder:text-gray-400 outline-none focus:border-[#0CC8A8] focus:ring-2 focus:ring-[#0CC8A8]/20 transition"
             />
             <input
               type="text"
               placeholder="Last name*"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
               required
               className="h-12 w-full rounded-lg border border-gray-300 bg-transparent px-4 text-sm text-gray-900 placeholder:text-gray-400 outline-none focus:border-[#0CC8A8] focus:ring-2 focus:ring-[#0CC8A8]/20 transition"
             />
@@ -55,8 +133,10 @@ export function SignupLoginCard() {
 
      
         <input
-          type="email"
-          placeholder={isLogin ? "Email* (admin)" : "Email*"}
+          type={isLogin ? "text" : "email"}
+          placeholder={isLogin ? "Email* (use: admin)" : "Email*"}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
           className="h-12 w-full rounded-lg border border-gray-300 bg-transparent px-4 text-sm text-gray-900 placeholder:text-gray-400 outline-none focus:border-[#0CC8A8] focus:ring-2 focus:ring-[#0CC8A8]/20 transition"
         />
@@ -65,7 +145,9 @@ export function SignupLoginCard() {
         <div className="relative">
           <input
             type={showPassword ? "text" : "password"}
-            placeholder={isLogin ? "Password* (admin)" : "Password (8+ characters)*"}
+            placeholder={isLogin ? "Password* (use: admin)" : "Password (8+ characters)*"}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             required
             className="h-12 w-full rounded-lg border border-gray-300 bg-transparent px-4 pr-11 text-sm text-gray-900 placeholder:text-gray-400 outline-none focus:border-[#0CC8A8] focus:ring-2 focus:ring-[#0CC8A8]/20 transition"
           />
@@ -124,14 +206,12 @@ export function SignupLoginCard() {
         )}
 
         {/* Submit button */}
-        <Link href="/dashboard">
-          <button
-            type="submit"
-            className="w-full h-12 rounded-full bg-[#0CC8A8] hover:bg-[#09B898] active:bg-[#089A88] text-white text-base font-semibold transition cursor-pointer"
-          >
-            {isLogin ? 'Log in' : 'Create account'}
-          </button>
-        </Link>
+        <button
+          type="submit"
+          className="w-full h-12 rounded-full bg-[#0CC8A8] hover:bg-[#09B898] active:bg-[#089A88] text-white text-base font-semibold transition cursor-pointer"
+        >
+          {isLogin ? 'Log in' : 'Create account'}
+        </button>
 
         {/* Social login */}
         <div className="grid grid-cols-3 gap-3 pt-1">

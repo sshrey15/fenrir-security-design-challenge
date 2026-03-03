@@ -34,15 +34,16 @@ export default function ScanDashboard() {
 
   return (
     <div className="space-y-6 font-sans">
-      <div className="bg-white dark:bg-[#151B23] rounded-xl overflow-hidden">
-        <ProjectInfoBar info={PROJECT_INFO} />
-        <div className="px-4 sm:px-6 pb-4 sm:pb-6">
-          <SeverityCards cards={SEVERITY_CARDS} />
-        </div>
-      </div>
+<div className="bg-white dark:bg-[#151B23] rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-800">
+  <ProjectInfoBar info={PROJECT_INFO} />
+  
 
-      {/* Section 2: Search/Filter Bar + Scan Table */}
-      <div className="bg-white dark:bg-[#151B23] rounded-xl overflow-hidden">
+  <div className="p-3 sm:p-6 pt-0 sm:pt-0">
+    <SeverityCards cards={SEVERITY_CARDS} />
+  </div>
+</div>
+
+      <div className="bg-white dark:bg-[#151B23] rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-800">
         <div className="px-4 sm:px-6 pt-4 sm:pt-6">
           <SearchFilterBar
             search={search}

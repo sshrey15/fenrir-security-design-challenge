@@ -5,7 +5,9 @@ import {usePathname, useSearchParams} from "next/navigation";
 import { MdOutlineWbSunny } from "react-icons/md";
 import { FaRegMoon } from "react-icons/fa";
 import { SCAN_DATA } from "../../config/home-dashboard-data";
+import { FINDINGS } from "../../config/scan-detail-data";
 import { useSidebar } from "./sidebar-context";
+import { exportScanReport, exportFindingsReport } from "../../lib/export-report";
 
 
 export default function DashboardNavbar() {
@@ -43,6 +45,16 @@ export default function DashboardNavbar() {
 
   function toggleTheme() {
     setTheme(theme === "dark" ? "light" : "dark");
+  }
+
+  function handleExport() {
+    if (scanDetail) {
+      // On a scan detail page — export findings for that scan
+      exportFindingsReport(FINDINGS, scanDetail.name);
+    } else {
+      // On dashboard home — export all scan data
+      exportScanReport(SCAN_DATA);
+    }
   }
 
   return (
@@ -92,7 +104,9 @@ export default function DashboardNavbar() {
 
 
       <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-        <button className="hidden sm:block px-4 py-2 text-sm font-medium text-gray-700 dark:text-white bg-white dark:bg-[#0A0F13] border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition cursor-pointer">
+        <button
+          onClick={handleExport}
+          className="hidden sm:block px-4 py-2 text-sm font-medium text-gray-700 dark:text-white bg-white dark:bg-[#0A0F13] border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition cursor-pointer">
           Export Report
         </button>
 
