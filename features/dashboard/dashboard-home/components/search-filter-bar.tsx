@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
+import NewScanModal from './new-scan-modal'
 
 export type ColumnKey = 'name' | 'type' | 'status' | 'progress' | 'vulnerability' | 'lastScan'
 
@@ -27,6 +28,7 @@ export default function SearchFilterBar({
   onColumnsChange,
 }: SearchFilterBarProps) {
   const [columnDropdownOpen, setColumnDropdownOpen] = useState(false)
+  const [scanModalOpen, setScanModalOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   // Close dropdown on outside click
@@ -42,7 +44,7 @@ export default function SearchFilterBar({
 
   function toggleColumn(key: ColumnKey) {
     if (visibleColumns.includes(key)) {
-      // Don't allow hiding all columns — keep at least 1
+      
       if (visibleColumns.length > 1) {
         onColumnsChange(visibleColumns.filter((c) => c !== key))
       }
@@ -57,7 +59,7 @@ export default function SearchFilterBar({
 
   return (
     <div className="flex items-center gap-3">
-      {/* Search */}
+      
       <div className="flex-1 relative">
         <svg
           width="18"
@@ -118,7 +120,7 @@ export default function SearchFilterBar({
               </button>
             </div>
 
-            {/* Column toggles */}
+        
             {ALL_COLUMNS.map((col) => {
               const isActive = visibleColumns.includes(col.key)
               return (
@@ -127,7 +129,7 @@ export default function SearchFilterBar({
                   onClick={() => toggleColumn(col.key)}
                   className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-left hover:bg-gray-50 dark:hover:bg-gray-800 transition cursor-pointer"
                 >
-                  {/* Custom checkbox */}
+             
                   <div
                     className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-colors shrink-0 ${
                       isActive
@@ -151,14 +153,22 @@ export default function SearchFilterBar({
         )}
       </div>
 
-      {/* New scan */}
-      <button className="flex items-center gap-2 px-4 py-2.5 bg-[#0CC8A8] text-white rounded-lg text-sm font-medium hover:bg-[#0AB89A] transition cursor-pointer">
+   
+      <div
+        
+        className="flex items-center gap-2 px-4 py-2.5 bg-[#0CC8A8] text-white rounded-lg text-sm font-medium hover:bg-[#0AB89A] transition cursor-pointer"
+      >
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <line x1="12" y1="5" x2="12" y2="19" />
           <line x1="5" y1="12" x2="19" y2="12" />
         </svg>
-        New scan
-      </button>
+        <button onClick={() => setScanModalOpen(true)}>
+          New scan
+        </button>
+      
+      </div>
+
+      <NewScanModal open={scanModalOpen} onClose={() => setScanModalOpen(false)} />
     </div>
   )
 }

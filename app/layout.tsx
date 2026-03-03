@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import QueryProvider from "@/app/providers/query-provider";
+import { Toaster } from "sonner";
 
 const gilroy = localFont({
   src: [
@@ -60,6 +61,7 @@ export default function RootLayout({
           <QueryProvider>
             {children}
           </QueryProvider>
+          <Toaster position="bottom-left" richColors />
           </ThemeProvider>
       
       </body>

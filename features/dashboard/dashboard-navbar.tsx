@@ -1,9 +1,14 @@
 'use client'
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import {usePathname} from "next/navigation";
+import { MdOutlineWbSunny } from "react-icons/md";
+import { FaRegMoon } from "react-icons/fa";
+
 
 export default function DashboardNavbar() {
   const { theme, setTheme } = useTheme();
+  const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
   const [isScanning, setIsScanning] = useState(true);
 
@@ -11,6 +16,17 @@ export default function DashboardNavbar() {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
+
+ const getBreadcrumb = () => {
+    const segments = pathname.split('/').filter(Boolean);
+    const lastSegment = segments[segments.length - 1] || "Dashboard";
+    
+    // Convert "scans" to "Scans" or "my-scan" to "My Scan"
+    return lastSegment
+      .split(/[-_]/)
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
 
   function toggleTheme() {
     setTheme(theme === "dark" ? "light" : "dark");
@@ -34,17 +50,17 @@ export default function DashboardNavbar() {
           <path d="M9 6l6 6-6 6" />
         </svg>
         <span className="text-[#0CC8A8] font-medium">
-          New Scan
+          {getBreadcrumb()}
         </span>
       </div>
 
-      {/* Right actions */}
+
       <div className="flex items-center gap-3">
         <button className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-white bg-white dark:bg-[#0A0F13] border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition cursor-pointer">
           Export Report
         </button>
 
-        {/* Toggle: Stop Scan / Start Scan */}
+      
         <button
           onClick={() => setIsScanning((prev) => !prev)}
           className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg border transition cursor-pointer ${
@@ -54,12 +70,12 @@ export default function DashboardNavbar() {
           }`}
         >
           {isScanning ? (
-            /* Stop icon (square) */
+            
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
               <rect x="4" y="4" width="16" height="16" rx="2" />
             </svg>
           ) : (
-            /* Play icon (triangle) */
+            
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
               <path d="M6 4l15 8-15 8V4z" />
             </svg>
@@ -67,28 +83,16 @@ export default function DashboardNavbar() {
           {isScanning ? 'Stop Scan' : 'Start Scan'}
         </button>
 
-        {/* Theme toggle */}
+    
         <button
           onClick={toggleTheme}
           className="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1A1A1A] hover:bg-gray-50 dark:hover:bg-gray-800 transition cursor-pointer"
           aria-label="Toggle theme"
         >
           {mounted && theme === "dark" ? (
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
-              <circle cx="12" cy="12" r="5" />
-              <line x1="12" y1="1" x2="12" y2="3" />
-              <line x1="12" y1="21" x2="12" y2="23" />
-              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-              <line x1="1" y1="12" x2="3" y2="12" />
-              <line x1="21" y1="12" x2="23" y2="12" />
-              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-            </svg>
+                      <MdOutlineWbSunny className="text-gray-600 dark:text-gray-200" />
           ) : (
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-600">
-              <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
-            </svg>
+       <FaRegMoon className="text-gray-600" />
           )}
         </button>
       </div>
