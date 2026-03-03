@@ -54,10 +54,10 @@ export default function LiveScanConsole({ entries, findings }: LiveScanConsolePr
   if (!visible) return null
 
   return (
-    <div className="bg-white border dark:bg-[#151B23] rounded-xl overflow-hidden  flex flex-col min-h-120">
+    <div className="bg-white border dark:bg-[#151B23] rounded-xl overflow-hidden  flex flex-col min-h-80 lg:min-h-120">
      
-      <div className="flex items-center bg-[#F8FAFC] border dark:bg-[#151B23] justify-between px-5 py-3 border-b border-gray-200 dark:border-gray-800">
-        <div className="flex items-center   gap-3">
+      <div className="flex items-center bg-[#F8FAFC] border dark:bg-[#151B23] justify-between px-3 sm:px-5 py-3 border-b border-gray-200 dark:border-gray-800">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
           <span className="w-2.5 h-2.5 rounded-full bg-[#0CC8A8] animate-pulse" />
           <span className="font-semibold text-sm text-gray-900 dark:text-white">
             Live Scan Console
@@ -125,9 +125,9 @@ export default function LiveScanConsole({ entries, findings }: LiveScanConsolePr
 
   
       {!collapsed && (
-        <div className="flex  flex-1 min-h-0 ">
+        <div className="flex flex-col lg:flex-row flex-1 min-h-0 ">
     
-          <div className="flex-1  flex flex-col min-w-0 border-r border-gray-200 dark:border-gray-800">
+          <div className="flex-1  flex flex-col min-w-0 lg:border-r border-gray-200 dark:border-gray-800">
             
             <div className="flex dark:bg-[#0A0F13] items-center gap-0 px-5 border-b border-gray-200 dark:border-gray-800">
               <button
@@ -153,31 +153,39 @@ export default function LiveScanConsole({ entries, findings }: LiveScanConsolePr
             </div>
 
             
-            <div className="flex-1  dark:bg-[#0A0F13] overflow-y-auto px-5 py-4 space-y-5 text-sm leading-relaxed" style={{ fontFamily: "'Roboto Mono', monospace" }}>
+            <div
+              className="flex-1 dark:bg-[#0A0F13] overflow-y-auto px-5 py-4 space-y-5 text-sm leading-relaxed scroll-smooth"
+              style={{ fontFamily: "'Roboto Mono', monospace" }}
+            >
               {tab === 'activity' ? (
-                entries.map((entry, i) => {
-                  const parts = highlightText(entry.text, entry.highlights)
-                  return (
-                    <div key={i} className="flex gap-3">
-                      <span className="text-gray-400 shrink-0 select-none">
-                        [{entry.timestamp}]
-                      </span>
-                      <p className="text-gray-600 dark:text-gray-300 whitespace-pre-wrap">
-                        {Array.isArray(parts)
-                          ? parts.map((p, j) =>
-                              typeof p === 'string' ? (
-                                <span key={j}>{p}</span>
-                              ) : (
-                                <span key={j} className={p.className}>
-                                  {p.text}
-                                </span>
+                <>
+                  {entries.map((entry, i) => {
+                    const parts = highlightText(entry.text, entry.highlights)
+                    return (
+                      <div
+                        key={i}
+                        className="flex gap-3"
+                      >
+                        <span className="text-[#0CC8A8] shrink-0 select-none">
+                          [{entry.timestamp}]
+                        </span>
+                        <p className="text-gray-600 dark:text-gray-300 whitespace-pre-wrap">
+                          {Array.isArray(parts)
+                            ? parts.map((p, j) =>
+                                typeof p === 'string' ? (
+                                  <span key={j}>{p}</span>
+                                ) : (
+                                  <span key={j} className={p.className}>
+                                    {p.text}
+                                  </span>
+                                )
                               )
-                            )
-                          : parts}
-                      </p>
-                    </div>
-                  )
-                })
+                            : parts}
+                        </p>
+                      </div>
+                    )
+                  })}
+                </>
               ) : (
                 <div className="flex items-center justify-center h-32 text-gray-400 text-sm">
                   No verification loops recorded yet.
@@ -187,7 +195,7 @@ export default function LiveScanConsole({ entries, findings }: LiveScanConsolePr
           </div>
 
           
-          <div className="w-95 shrink-0  flex flex-col min-h-0">
+          <div className="w-full lg:w-95 shrink-0 flex flex-col min-h-0 border-t lg:border-t-0 border-gray-200 dark:border-gray-800">
             <div className="px-5 py-2.5 dark:bg-[#0A0F13] border-b border-gray-200 dark:border-gray-800">
               <span className="font-semibold text-sm text-gray-900 dark:text-white">
                 Finding Log

@@ -1,47 +1,59 @@
+"use client";
+
+import { useSidebar } from "./sidebar-context";
+
 type Props = {
   children: React.ReactNode;
 };
 
-type DashboardLayoutComponent = React.FC<Props> & {
-  Sidebar: React.FC<Props>;
-  Navbar: React.FC<Props>;
-  Content: React.FC<Props>;
-};
-
-const DashboardLayout: DashboardLayoutComponent = ({ children }) => {
+export default function DashboardLayout({ children }: Props) {
   return (
     <div className="flex h-screen overflow-hidden">
       {children}
     </div>
   );
-};
+}
 
-const Sidebar: React.FC<Props> = ({ children }) => {
+export function DashboardSidebar({ children }: Props) {
+  const { isOpen, close } = useSidebar();
+
   return (
-    <aside className="w-60 shrink-0 bg-white dark:bg-[#0A0F13] border-r border-gray-200 dark:border-gray-700 h-screen overflow-y-auto">
-      {children}
-    </aside>
-  );
-};
+    <>
+      {/* Mobile overlay */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden"
+          onClick={close}
+        />
+      )}
 
-const Navbar: React.FC<Props> = ({ children }) => {
+      {/* Sidebar */}
+      <aside
+        className={`
+          fixed inset-y-0 left-0 z-50 w-60 bg-white dark:bg-[#0A0F13] border-r border-gray-200 dark:border-gray-700 h-screen overflow-y-auto
+          transform transition-transform duration-300 ease-in-out
+          lg:relative lg:translate-x-0 lg:shrink-0
+          ${isOpen ? "translate-x-0" : "-translate-x-full"}
+        `}
+      >
+        {children}
+      </aside>
+    </>
+  );
+}
+
+export function DashboardNavbarSlot({ children }: Props) {
   return (
     <header className="shrink-0">
       {children}
     </header>
   );
-};
+}
 
-const Content: React.FC<Props> = ({ children }) => {
+export function DashboardContent({ children }: Props) {
   return (
-    <main className="flex-1 overflow-y-auto dark:bg-[#0A0F13] bg-[#FAFAFA] p-2">
+    <main className="flex-1 overflow-y-auto dark:bg-[#0A0F13] bg-[#FAFAFA] p-1.5 sm:p-2">
       {children}
     </main>
   );
-};
-
-DashboardLayout.Sidebar = Sidebar;
-DashboardLayout.Navbar = Navbar;
-DashboardLayout.Content = Content;
-
-export default DashboardLayout;
+}

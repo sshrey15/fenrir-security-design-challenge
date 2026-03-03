@@ -10,18 +10,18 @@ const CHANGE_COLORS: Record<string, string> = {
  
 export default function SeverityCards({ cards }: { cards: SeverityCard[] }) {
   return (
-    <div className="grid grid-cols-4 gap-4 pt-4">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 pt-4">
       {cards.map((card) => (
-        <div key={card.label} className="rounded-xl p-5">
-          <div className="flex items-center gap-30 mb-4">
-            <span className="text-sm md:text-md font-semibold text-gray-500 dark:text-gray-400">
+        <div key={card.label} className="rounded-xl p-3 sm:p-5">
+          <div className="flex items-center gap-4 sm:gap-30 mb-3 sm:mb-4">
+            <span className="text-xs sm:text-sm md:text-md font-semibold text-gray-500 dark:text-gray-400">
               {card.label}
             </span>
             <SeverityIcon type={card.iconType} />
           </div>
 
-          <div className="flex items-end gap-3">
-            <p className="text-4xl font-bold text-gray-900 dark:text-white leading-none">
+          <div className="flex items-end gap-2 sm:gap-3">
+            <p className="text-2xl sm:text-4xl font-bold text-gray-900 dark:text-white leading-none">
               {card.value}
             </p>
             <p

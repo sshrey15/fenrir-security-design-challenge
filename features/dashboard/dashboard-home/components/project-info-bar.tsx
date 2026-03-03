@@ -11,14 +11,14 @@ export default function ProjectInfoBar({ info }: { info: ProjectInfo }) {
   ]
 
   return (
-    <div className="flex items-center gap-8 text-sm text-gray-500 px-6 py-4  ">
+    <div className="flex flex-wrap items-center gap-4 sm:gap-8 text-sm text-gray-500 px-4 sm:px-6 py-4">
       {items.map((item, i) => (
-        <div key={item.label} className="flex items-center gap-8">
+        <div key={item.label} className="flex items-center gap-4 sm:gap-8">
           <div>
             <span className="text-gray-400 ">{item.label}: </span>
             <span className="font-semibold text-gray-900 dark:text-white ">{item.value}</span>
           </div>
-          {i < items.length - 1 && <div className="w-px h-5 bg-gray-200" />}
+          {i < items.length - 1 && <div className="w-px h-5 bg-gray-200 hidden sm:block" />}
         </div>
       ))}
 

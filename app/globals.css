@@ -141,3 +141,28 @@
     @apply bg-[url('/auth-page/bg.png')] bg-cover bg-center bg-no-repeat;
   }
 }
+
+/* Console animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out;
+}
+
+.animate-blink {
+  animation: blink 0.8s step-end infinite;
+}

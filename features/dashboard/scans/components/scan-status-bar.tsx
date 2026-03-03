@@ -6,9 +6,9 @@ interface ScanStatusBarProps {
 
 export default function ScanStatusBar({ counts }: ScanStatusBarProps) {
   return (
-    <div className="flex bg-[#F0F5F9] items-center justify-between px-6 py-3 border-t dark:bg-[#151B23] text-sm">
+    <div className="flex flex-wrap gap-4 bg-[#F0F5F9] items-center justify-between px-4 sm:px-6 py-3 border-t dark:bg-[#151B23] text-sm">
      
-      <div className="flex items-center gap-6">
+      <div className="flex flex-wrap items-center gap-4 sm:gap-6">
         <StatItem icon={<AgentIcon />} label="Sub-Agents" value={counts.subAgents} />
         <Divider />
         <StatItem icon={<ParallelIcon />} label="Parallel Executions" value={counts.parallelExecutions} />
@@ -17,7 +17,7 @@ export default function ScanStatusBar({ counts }: ScanStatusBarProps) {
       </div>
 
       {/* Right: severity counters */}
-      <div className="flex items-center gap-5">
+      <div className="flex flex-wrap items-center gap-3 sm:gap-5">
         <SeverityCounter label="Critical" value={counts.critical} color="#EF4444" />
         <SeverityCounter label="High" value={counts.high} color="#F97316" />
         <SeverityCounter label="Medium" value={counts.medium} color="#EABB08" />

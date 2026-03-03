@@ -18,7 +18,7 @@ function deriveProgressFromRow(row: ScanRow): ScanProgress {
   if (row.status === 'Completed') {
     return { percent: 100, activePhase: 'Reporting' }
   }
-  return SCAN_PROGRESS
+  return { percent: row.progress, activePhase: SCAN_PROGRESS.activePhase }
 }
 
 function deriveMetaFromRow(row: ScanRow): ScanMeta {

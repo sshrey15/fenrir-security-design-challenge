@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import { useSidebar } from "./sidebar-context";
 
 const NAV_ITEMS = [
   {
@@ -149,6 +150,7 @@ const BOTTOM_NAV_ITEMS = [
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const { close } = useSidebar();
 
   const allItems = [...NAV_ITEMS, ...BOTTOM_NAV_ITEMS];
   const active = allItems.find(
@@ -172,7 +174,7 @@ export default function Sidebar() {
 
       <nav className=" space-y-1 px-3 pb-6">
         {NAV_ITEMS.map(({ label, icon, href }) => (
-          <Link key={label} href={href}>
+          <Link key={label} href={href} onClick={close}>
             <button
               className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-200 text-left font-medium text-sm ${
                 active === label
@@ -191,8 +193,7 @@ export default function Sidebar() {
 
       <nav className="space-y-1 px-3 pb-4 pt-6">
         {BOTTOM_NAV_ITEMS.map(({ label, icon, href }) => (
-          <Link key={label} href={href}>
-           <button
+          <Link key={label} href={href} onClick={close}>           <button
               className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-200 text-left font-medium text-sm ${
                 active === label
                   ? "bg-[#E6FAF6] dark:bg-[#07262A] text-[#0CC8A8]"

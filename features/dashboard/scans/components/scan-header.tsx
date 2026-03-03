@@ -26,12 +26,11 @@ export default function ScanHeader({ progress, meta }: { progress: ScanProgress;
   const activeIndex = PHASES.findIndex((p) => p.key === progress.activePhase);
 
   return (
-    <div className="bg-white dark:bg-[#151B23] border border-gray-100 dark:border-gray-800 rounded-2xl p-6 shadow-sm w-full mx-auto">
-      <div className="grid grid-cols-[auto_1fr] gap-8">
+    <div className="bg-white dark:bg-[#151B23] border border-gray-100 dark:border-gray-800 rounded-2xl p-4 sm:p-6 shadow-sm w-full mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-6 md:gap-8">
         
-        {/* Left: Progress Circle — stretches to match full right-side height */}
-        <div className="flex items-center justify-center border-r border-gray-100 dark:border-gray-800 pr-8">
-          <div className="relative w-28 h-28">
+        <div className="flex items-center justify-center md:border-r border-gray-100 dark:border-gray-800 md:pr-8">
+          <div className="relative w-24 h-24 sm:w-28 sm:h-28">
             <svg className="w-full h-full transform -rotate-90">
               <circle cx="56" cy="56" r="48" fill="#111827" />
               <circle 
@@ -49,13 +48,13 @@ export default function ScanHeader({ progress, meta }: { progress: ScanProgress;
           </div>
         </div>
 
-        {/* Right: Pipeline + Metadata stacked */}
+     
         <div className="flex flex-col gap-6">
           
-          {/* Pipeline Phases */}
-          <div className="relative flex justify-between items-start">
-            {/* Connector Line */}
-            <div className="absolute top-5 left-0 right-0 h-px bg-gray-200 dark:bg-gray-800 z-0" />
+       
+          <div className="relative flex flex-wrap sm:flex-nowrap justify-between items-start gap-4 sm:gap-0">
+          
+            <div className="absolute top-5 left-0 right-0 h-px bg-gray-200 dark:bg-gray-800 z-0 hidden sm:block" />
             
             {PHASES.map((phase, i) => {
               const isCompleted = progress.percent === 100 || i < activeIndex;
@@ -65,7 +64,7 @@ export default function ScanHeader({ progress, meta }: { progress: ScanProgress;
               return (
                 <div key={phase.key} className="relative z-10 flex flex-col items-center gap-3 px-2">
                   <div className={`
-                    w-10 h-10 rounded-full flex items-center justify-center transition-all
+                    w-13 h-13 rounded-full flex items-center justify-center transition-all
                     ${isHighlighted 
                       ? 'bg-[#439691] text-white ring-10 ring-[#0CC8A8]/10' 
                       : 'bg-white border border-gray-200 dark:bg-[#0D1117] dark:border-gray-800 text-gray-400'}
@@ -84,7 +83,7 @@ export default function ScanHeader({ progress, meta }: { progress: ScanProgress;
           <div className="h-px bg-gray-100 dark:bg-gray-800" />
 
           {/* Metadata Row */}
-          <div className="grid grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
             <MetaItem label="Scan Type" value={meta.scanType} />
             <MetaItem label="Targets" value={meta.targets} />
             <MetaItem label="Started At" value={meta.startedAt} />

@@ -51,7 +51,8 @@ export default function ScanTable({ data, pageSize = 15, totalScans, visibleColu
 
   return (
     <div>
-      <table className="w-full">
+      <div className="overflow-x-auto">
+      <table className="w-full min-w-175">
         <thead>
           <tr className="font-semibold border-b border-gray-200 dark:border-gray-700">
             {isVisible('name') && (
@@ -127,10 +128,11 @@ export default function ScanTable({ data, pageSize = 15, totalScans, visibleColu
           ))}
         </tbody>
       </table>
+      </div>
 
       {/* Pagination Footer */}
-      <div className="flex items-center justify-between px-6 py-4 border-t border-gray-200 dark:border-gray-700">
-        <p className="text-sm text-medium text-gray-400">
+      <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-t border-gray-200 dark:border-gray-700">
+        <p className="text-xs sm:text-sm text-medium text-gray-400">
           Showing {showingStart}-{showingEnd} of {total} Scans
         </p>
 
