@@ -31,7 +31,7 @@ export default function ScanHeader({ progress, meta }: { progress: ScanProgress;
         
         <div className="flex items-center justify-center md:border-r border-gray-100 dark:border-gray-800 md:pr-8">
           <div className="relative w-24 h-24 sm:w-28 sm:h-28">
-            <svg className="w-full h-full transform -rotate-90">
+            {/* <svg className="w-full h-full transform -rotate-90">
               <circle cx="56" cy="56" r="48" fill="#111827" />
               <circle 
                 cx="56" cy="56" r="48" 
@@ -40,7 +40,7 @@ export default function ScanHeader({ progress, meta }: { progress: ScanProgress;
                 strokeDashoffset={301.6 - (301.6 * progress.percent) / 100}
                 strokeLinecap="round"
               />
-            </svg>
+            </svg> */}
             <div className="absolute inset-0 flex flex-col items-center justify-center">
               <span className="text-2xl font-bold text-[#0CC8A8]">{progress.percent}%</span>
               <span className="text-[10px] text-gray-400 font-medium uppercase">{progress.percent === 100 ? 'Completed' : 'In Progress'}</span>

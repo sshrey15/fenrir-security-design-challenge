@@ -35,7 +35,7 @@ export function SignupLoginCard() {
 
       <form className="flex flex-col gap-4">
 
-        {/* Name fields — only for signup */}
+   
         {!isLogin && (
           <>
             <input
@@ -53,19 +53,19 @@ export function SignupLoginCard() {
           </>
         )}
 
-        {/* Email */}
+     
         <input
           type="email"
-          placeholder="Email address*"
+          placeholder={isLogin ? "Email* (admin)" : "Email*"}
           required
           className="h-12 w-full rounded-lg border border-gray-300 bg-transparent px-4 text-sm text-gray-900 placeholder:text-gray-400 outline-none focus:border-[#0CC8A8] focus:ring-2 focus:ring-[#0CC8A8]/20 transition"
         />
 
-        {/* Password */}
+     
         <div className="relative">
           <input
             type={showPassword ? "text" : "password"}
-            placeholder={isLogin ? "Password*" : "Password (8+ characters)*"}
+            placeholder={isLogin ? "Password* (admin)" : "Password (8+ characters)*"}
             required
             className="h-12 w-full rounded-lg border border-gray-300 bg-transparent px-4 pr-11 text-sm text-gray-900 placeholder:text-gray-400 outline-none focus:border-[#0CC8A8] focus:ring-2 focus:ring-[#0CC8A8]/20 transition"
           />
@@ -88,7 +88,7 @@ export function SignupLoginCard() {
           </button>
         </div>
 
-        {/* Forgot password — only for login */}
+        
         {isLogin && (
           <div className="flex justify-end -mt-1">
             <a href="#" className="text-sm text-[#0CC8A8] hover:underline font-medium">
@@ -97,7 +97,7 @@ export function SignupLoginCard() {
           </div>
         )}
 
-        {/* Terms checkbox — only for signup */}
+       
         {!isLogin && (
           <div className="flex items-start gap-3 py-1">
             <input
